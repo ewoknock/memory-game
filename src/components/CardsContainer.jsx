@@ -6,6 +6,7 @@ function CardsContainer(){
     const [score, setScore] = useState(0)
     const [numCards, setNumCards] = useState(8)
     const [idList, setIdList] = useState([])
+    const [gameOver, setGameOver] = useState(false)
 
     const createIdList = () => {
         const newIds = [];
@@ -34,7 +35,7 @@ function CardsContainer(){
         const cardId = parseInt(e.target.closest(".card").id)
         console.log(cardId)
         if(idList.some((id) => id.id === cardId && id.clicked)){
-            console.log("game over")
+            setGameOver(true)
         } else{
             setScore(score + 1)
             setIdList(idList.map(id => {
@@ -55,11 +56,23 @@ function CardsContainer(){
             <div className="scores">
                 <p>Current Score: {score}</p>
             </div>
-            <div className="cards-container">
-                {shuffledIds.map(id => 
-                    <Card key={id.id} id={id.id} onClick={handleCardClick}/>
-                )}
-            </div>
+            {gameOver ? 
+                <div key="game-over" className="game-over">
+                    <h2 className="game-over__header">Game Over</h2>
+                    <div className="game-over__content">
+                        <p>You caught <strong>{score} pokemon</strong>!</p>
+                        <button className="game-over__reset">Play again</button>
+                    </div>
+
+                </div>
+            :
+                <div className="cards-container">
+                    {shuffledIds.map(id => 
+                        <Card key={id.id} id={id.id} onClick={handleCardClick}/>
+                    )}
+                 </div>
+            }
+ 
             </main>
         </>
     )
