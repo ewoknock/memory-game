@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Card from "./Card"
 import "../styles/CardsContainer.scss"
 
@@ -7,6 +7,14 @@ function CardsContainer(){
     const [numCards, setNumCards] = useState(8)
     const [idList, setIdList] = useState([])
     const [gameOver, setGameOver] = useState(false)
+    const [highScore, setHighScore] = useState(0)
+
+    useEffect(() => {
+        const localHighScore = localStorage.getItem("highScore");
+        if (localHighScore){
+            setHighScore(localHighScore);
+        }
+    }, []);
 
     const createIdList = () => {
         const newIds = [];
@@ -38,10 +46,18 @@ function CardsContainer(){
         setGameOver(false);
     }
 
+    const endGame = () => {
+        if (score > highScore) {
+            setHighScore(score);
+            localStorage.setItem("highScore", score);
+        }
+        setGameOver(true)
+    }
+
     const handleCardClick = (e) => {
         const cardId = parseInt(e.target.closest(".card").id)
         if(idList.some((id) => id.id === cardId && id.clicked)){
-            setGameOver(true)
+            endGame()
         } else{
             setScore(score + 1)
             if(idList.filter((id) => id.clicked).length + 1 == numCards){
@@ -64,6 +80,7 @@ function CardsContainer(){
         <>
             <main>
             <div className="scores">
+                <p>High Score: {highScore}</p>
                 <p>Current Score: {score}</p>
             </div>
             {gameOver ? 
