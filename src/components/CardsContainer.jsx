@@ -11,14 +11,17 @@ function CardsContainer(){
         while(newIds.length < numCards){
             const randomId = Math.floor(Math.random() * 151) + 1
             if(!newIds.find((id) => id === randomId)){
-                newIds.push(randomId)
+                newIds.push({
+                    id: randomId,
+                    clicked: false
+                })
             }
         }
         setIdList(newIds)
     }
 
     const shuffleArray = (list) => {
-        const array = [...list];
+        const array = [...list]
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * i);
             [array[i], array[j]] = [array[j], array[i]];
@@ -27,6 +30,11 @@ function CardsContainer(){
     };
 
     const handleCardClick = (e) => {
+        const cardId = e.target.closest(".card").id
+
+        setIdList(idList.map(id => {
+            return id.id === cardId ? {...id, clicked: true} : id
+        }))
 
     }
 
@@ -36,7 +44,7 @@ function CardsContainer(){
 
     console.log(idList)
 
-    const shuffledIds = shuffleArray(idList);
+    const shuffledIds = shuffleArray(idList)
 
     console.log(shuffledIds)
     return (
@@ -44,7 +52,7 @@ function CardsContainer(){
             <main>
             <div className="cards-container">
                 {shuffledIds.map(id => 
-                    <Card key={id} id={id} onClick={handleCardClick}/>
+                    <Card key={id.id} id={id.id} onClick={handleCardClick}/>
                 )}
             </div>
             </main>
