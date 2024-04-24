@@ -1,8 +1,16 @@
 .cards-container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    padding: var(--space-l);
+    padding: 0 var(--space-l);
     gap: var(--space-m);
-    margin: var(--space-l) auto;
+    margin: 0 auto;
     width: 80%;
+}
+
+.scores{
+    border: 1px solid var(--color-black);
+    border-radius: var(--space-xxs);
+    width: fit-content;
+    padding: var(--space-m);
+    margin: var(--space-l) auto;
 }

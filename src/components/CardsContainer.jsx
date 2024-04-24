@@ -3,6 +3,7 @@ import Card from "./Card"
 import "../styles/CardsContainer.scss"
 
 function CardsContainer(){
+    const [score, setScore] = useState(0)
     const [numCards, setNumCards] = useState(8)
     const [idList, setIdList] = useState([])
 
@@ -30,26 +31,30 @@ function CardsContainer(){
     };
 
     const handleCardClick = (e) => {
-        const cardId = e.target.closest(".card").id
-
-        setIdList(idList.map(id => {
-            return id.id === cardId ? {...id, clicked: true} : id
-        }))
-
+        const cardId = parseInt(e.target.closest(".card").id)
+        console.log(cardId)
+        if(idList.some((id) => id.id === cardId && id.clicked)){
+            console.log("game over")
+        } else{
+            setScore(score + 1)
+            setIdList(idList.map(id => {
+                return id.id === cardId ? {...id, clicked: true} : id
+            }))
+        }
     }
 
     if(numCards !== idList.length){
         createIdList()
     }
 
-    console.log(idList)
-
     const shuffledIds = shuffleArray(idList)
 
-    console.log(shuffledIds)
     return (
         <>
             <main>
+            <div className="scores">
+                <p>Current Score: {score}</p>
+            </div>
             <div className="cards-container">
                 {shuffledIds.map(id => 
                     <Card key={id.id} id={id.id} onClick={handleCardClick}/>
