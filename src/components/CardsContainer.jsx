@@ -12,7 +12,7 @@ function CardsContainer(){
         const newIds = [];
         while(newIds.length < numCards){
             const randomId = Math.floor(Math.random() * 151) + 1
-            if(!newIds.find((id) => id === randomId)){
+            if(!newIds.find((id) => id.id === randomId)){
                 newIds.push({
                     id: randomId,
                     clicked: false
@@ -31,13 +31,23 @@ function CardsContainer(){
         return array;
     };
 
+    const resetGame = () => {
+        setNumCards(8);
+        setIdList([]);
+        setScore(0)
+        setGameOver(false);
+    }
+
     const handleCardClick = (e) => {
         const cardId = parseInt(e.target.closest(".card").id)
-        console.log(cardId)
         if(idList.some((id) => id.id === cardId && id.clicked)){
             setGameOver(true)
         } else{
             setScore(score + 1)
+            if(idList.filter((id) => id.clicked).length + 1 == numCards){
+                setNumCards(numCards + 4)
+                return
+            }
             setIdList(idList.map(id => {
                 return id.id === cardId ? {...id, clicked: true} : id
             }))
@@ -61,7 +71,7 @@ function CardsContainer(){
                     <h2 className="game-over__header">Game Over</h2>
                     <div className="game-over__content">
                         <p>You caught <strong>{score} pokemon</strong>!</p>
-                        <button className="game-over__reset">Play again</button>
+                        <button className="game-over__reset" onClick={resetGame}>Play again</button>
                     </div>
 
                 </div>

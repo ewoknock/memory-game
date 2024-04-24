@@ -40,5 +40,9 @@
         padding: var(--space-s);
         border: none;
         border-radius: var(--space-l);
+
+        &:hover{
+            cursor: pointer;
+        }
     }
 }
