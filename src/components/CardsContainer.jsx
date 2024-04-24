@@ -9,7 +9,7 @@ function CardsContainer(){
     const createIdList = () => {
         const newIds = [];
         while(newIds.length < numCards){
-            const randomId = Math.floor(Math.random() * 151)
+            const randomId = Math.floor(Math.random() * 151) + 1
             if(!newIds.find((id) => id === randomId)){
                 newIds.push(randomId)
             }
